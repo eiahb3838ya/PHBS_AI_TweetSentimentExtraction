@@ -1,6 +1,7 @@
 # AI_SS2020M4
 NLP : 从句子中寻找最能表达情绪（决定句子情绪）的support phrase 
 
+[source](https://github.com/ZhangjieLyu/AI_SS2020M4)
 
 
 ## 进度管理
