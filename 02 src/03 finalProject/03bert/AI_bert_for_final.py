@@ -6,9 +6,10 @@ Created on Mon Jun 15 2020
 
 """
 #==============================set data set================================
-DATA_SET = "sample_19252.json"
-DATA_COLUMN = 'newsSummary' # can use 'newsTitle'
+DATA_SET = "sample_19252.json" #FIXME: change this to biggest data set!
+DATA_COLUMN = 'newsSummary' #FIXME: can use 'newsTitle'
 LABEL_COLUMN = 'emotionIndicator'
+EXPORT_PATH = 'testing'
 
 #==============================Import library ==============================
 import pandas as pd
@@ -207,7 +208,6 @@ def model_fn_builder(num_labels, learning_rate, num_train_steps,num_warmup_steps
   # Return the actual model function in the closure
   return model_fn
 
-
 # used to do prediction
 def predict_emotion(dataList):
   newDf = pd.DataFrame()
@@ -227,6 +227,21 @@ def predict_emotion(dataList):
 
   for p in predictions:
     print("probabilities: " + str(p["probabilities"]) + "label is: " + str(label_list[p['labels']]) + "\n")
+
+def serving_input_fn():
+    label_ids = tf.placeholder(tf.int32, [None], name='label_ids')
+    input_ids = tf.placeholder(tf.int32, [None, MAX_SEQ_LENGTH], name='input_ids')
+    input_mask = tf.placeholder(tf.int32, [None, MAX_SEQ_LENGTH], name='input_mask')
+    segment_ids = tf.placeholder(tf.int32, [None, MAX_SEQ_LENGTH], name='segment_ids')
+    input_fn = tf.estimator.export.build_raw_serving_input_receiver_fn(
+        {
+        'label_ids': label_ids,
+        'input_ids': input_ids,
+        'input_mask': input_mask,
+        'segment_ids': segment_ids
+        }
+    )()
+    return input_fn
 
 #===============================run ==============================================
 if __name__ == '__main__':
@@ -317,8 +332,8 @@ if __name__ == '__main__':
         is_training=True,
         drop_remainder=False)
 
-    # start training
-    print(f'Beginning Training!')
+    # start training.
+    print('Beginning Training!')
     current_time = datetime.now()
     estimator.train(input_fn=train_input_fn, max_steps=num_train_steps)
     print("Training took time ", datetime.now() - current_time)
@@ -331,5 +346,10 @@ if __name__ == '__main__':
                                                     drop_remainder=False)
     estimator.evaluate(input_fn=test_input_fn, steps=None)
 
-    # run a test case
-    predict_emotion(test[DATA_COLUMN].iloc[6:16].values)
+    # run some test data
+    print(test[DATA_COLUMN].iloc[:10].values)
+    predict_emotion(test[DATA_COLUMN].iloc[:10].values)
+
+    # save model to pb file in testing folder
+    estimator._export_to_tpu = False  # NEVER CHANGE THIS LINE
+    estimator.export_saved_model(export_dir_base=EXPORT_PATH,serving_input_receiver_fn=serving_input_fn)
