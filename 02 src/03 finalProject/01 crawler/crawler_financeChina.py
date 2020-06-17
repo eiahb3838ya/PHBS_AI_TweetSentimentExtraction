@@ -130,56 +130,59 @@ def get_dict_list(ul_list):
     return(dict_list)
 
 
-
-EXEFILENAME="financeChina"
-logger=Logger(EXEFILENAME)
-logger.info("start running "+EXEFILENAME)
-
-ROOT_LINK="http://finance.china.com.cn/stock/"
-sub_link=["ssgs"]#,"ssgs","zqyw"
-
-ssgsLink="http://app.finance.china.com.cn/news/column.php?cname=上市公司&p=176"
-zqywLink = "http://app.finance.china.com.cn/news/column.php?cname=证券要闻&p=52"
-dpLink = "http://app.finance.china.com.cn/news/column.php?cname=大盘分析&p=18"
-# PAGE154
-for this_sub_link in sub_link:
-    # req_link=ROOT_LINK+this_sub_link
-    req_link = ssgsLink
-    while(True):
-        logger.info("req new page of :"+req_link)
-        # connection error
-        try:
-            res=requests.get(req_link)
-        except Exception as e:
-            logger.warning(str(e))
-            logger.warning("the page not found")
-            break
-
-        res.encoding=('utf8')
-        html_doc=res.text
-        soup = BeautifulSoup(html_doc, 'html.parser')
-        ul_list=soup.find("ul",class_="news_list")
-        if not ul_list:
-            logger.warning("there's no ul_list")
-
-        dict_list=get_dict_list(ul_list)
-        all_df=pd.DataFrame(dict_list,columns=["datetime","title","content","link","source"])
-
-        file_path = "news_data/"+EXEFILENAME+"4.csv"
-        if (os.path.isfile(file_path)):
-            all_df.to_csv(file_path,mode="a",index_label="id", header=False)
-            logger.info("append csv page: "+req_link)
-        else:
-            all_df.to_csv(file_path,mode="a",index_label="id")
-            logger.info("new write csv page: "+req_link)
-        
-        if len(dict_list)>0:
-            next_a=soup.find("ul",class_="page").findAll("li")[1].a
-            req_link=next_a.get("href")
-            if len(req_link)<=0:
+if __name__ == "__main__":
+    EXEFILENAME="financeChina"
+    logger=Logger(EXEFILENAME)
+    logger.info("start running "+EXEFILENAME)
+    
+    ROOT_LINK="http://finance.china.com.cn/stock/"
+    sub_link=["ssgs"]#,"ssgs","zqyw"
+    
+    ssgsLink="http://app.finance.china.com.cn/news/column.php?cname=上市公司&p=176"
+    zqywLink = "http://app.finance.china.com.cn/news/column.php?cname=证券要闻&p=52"
+    dpLink = "http://app.finance.china.com.cn/news/column.php?cname=大盘分析&p=18"
+    # PAGE154
+    for this_sub_link in sub_link:
+        # req_link=ROOT_LINK+this_sub_link
+        req_link = ssgsLink
+        while(True):
+            logger.info("req new page of :"+req_link)
+            # connection error
+            try:
+                res=requests.get(req_link)
+            except Exception as e:
+                logger.warning(str(e))
+                logger.warning("the page not found")
                 break
-            elif req_link.startswith("/news/"):
-                req_link="http://app.finance.china.com.cn"+req_link
-        else:
-            break        
-
+    
+            res.encoding=('utf8')
+            html_doc=res.text
+            soup = BeautifulSoup(html_doc, 'html.parser')
+            ul_list=soup.find("ul",class_="news_list")
+            if not ul_list:
+                logger.warning("there's no ul_list")
+    
+            dict_list=get_dict_list(ul_list)
+            all_df=pd.DataFrame(dict_list,columns=["datetime","title","content","link","source"])
+    
+            file_path = DATA_PATH + EXEFILENAME+"_{}.csv".format(date.today().strftime("%Y%m%d"))
+            if not os.path.isdir(DATA_PATH):
+                print("creat path for data")
+                os.makedirs(DATA_PATH)
+            if (os.path.isfile(file_path)):
+                all_df.to_csv(file_path,mode="a",index_label="id", header=False)
+                logger.info("append csv page: "+req_link)
+            else:
+                all_df.to_csv(file_path,mode="a",index_label="id")
+                logger.info("new write csv page: "+req_link)
+            
+            if len(dict_list)>0:
+                next_a=soup.find("ul",class_="page").findAll("li")[1].a
+                req_link=next_a.get("href")
+                if len(req_link)<=0:
+                    break
+                elif req_link.startswith("/news/"):
+                    req_link="http://app.finance.china.com.cn"+req_link
+            else:
+                break        
+    

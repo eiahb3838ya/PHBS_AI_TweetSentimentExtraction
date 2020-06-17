@@ -116,7 +116,8 @@ if __name__ == "__main__":
     logger=Logger(EXEFILENAME)
     logger.info("start running "+EXEFILENAME)
     ROOT_LINK = "http://finance.sina.com.cn/roll/index.d.html?cid=56592" 
-    
+    DATA_PATH = "../02 news_data/"
+    # DATA_PATH = "news_data/"
     for page_num in range(1,3):
         req_link=ROOT_LINK+"&page="+str(page_num)
         logger.info("req new page of :"+req_link)
@@ -140,7 +141,11 @@ if __name__ == "__main__":
         dict_list=get_dict_list(ul_list)
         all_df=pd.DataFrame(dict_list,columns=["datetime","title","content","link","source"])
     
-        file_path = "news_data/"+EXEFILENAME+"_{}.csv".format(date.today().strftime("%Y%m%d"))
+        file_path = DATA_PATH + EXEFILENAME+"_{}.csv".format(date.today().strftime("%Y%m%d"))
+        if not os.path.isdir(DATA_PATH):
+          print("creat path for data")
+          os.makedirs(DATA_PATH)
+          
         if (os.path.isfile(file_path)):
             all_df.to_csv(file_path,mode="a",index_label="id", header=False)
             logger.info("append csv page: "+req_link)

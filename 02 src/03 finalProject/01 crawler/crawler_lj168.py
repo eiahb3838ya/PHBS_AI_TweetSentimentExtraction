@@ -105,38 +105,41 @@ def get_dict_list(ul_list):
     return(dict_list)
 
 
-
-EXEFILENAME="lj168"
-logger=Logger(EXEFILENAME)
-logger.info("start running "+EXEFILENAME)
-ROOT_LINK="https://www.lj168.com/1008/dissort?"
-for page_num in range(1,561):
-    req_link=ROOT_LINK+"page="+str(page_num)
-    logger.info("req new page of :"+req_link)
-    # connection error
-    try:
-        res=requests.get(req_link)
-    except Exception:
-        logger.warning(Exception)
-        logger.warning("the page not found")
-        continue
-
-    res.encoding=('utf8')
-    html_doc=res.text
-    soup = BeautifulSoup(html_doc, 'html.parser')
-    ul_list=soup.findAll('ul',class_="newsul01")
-    if not ul_list:
-        logger.warning("there's no ul_list")
-
-    dict_list=get_dict_list(ul_list)
-    all_df=pd.DataFrame(dict_list,columns=["datetime","title","content","link","source"])
-
-    file_path = "news_data/"+EXEFILENAME+".csv"
-    if (os.path.isfile(file_path)):
+if __name__ == "__main__":
+    EXEFILENAME="lj168"
+    logger=Logger(EXEFILENAME)
+    logger.info("start running "+EXEFILENAME)
+    ROOT_LINK="https://www.lj168.com/1008/dissort?"
+    for page_num in range(1,561):
+        req_link=ROOT_LINK+"page="+str(page_num)
+        logger.info("req new page of :"+req_link)
+        # connection error
+        try:
+            res=requests.get(req_link)
+        except Exception:
+            logger.warning(Exception)
+            logger.warning("the page not found")
+            continue
+    
+        res.encoding=('utf8')
+        html_doc=res.text
+        soup = BeautifulSoup(html_doc, 'html.parser')
+        ul_list=soup.findAll('ul',class_="newsul01")
+        if not ul_list:
+            logger.warning("there's no ul_list")
+    
+        dict_list=get_dict_list(ul_list)
+        all_df=pd.DataFrame(dict_list,columns=["datetime","title","content","link","source"])
+    
+        file_path = DATA_PATH + EXEFILENAME+"_{}.csv".format(date.today().strftime("%Y%m%d"))
+        if not os.path.isdir(DATA_PATH):
+            print("creat path for data")
+            os.makedirs(DATA_PATH)
+        if (os.path.isfile(file_path)):
             all_df.to_csv(file_path,mode="a",index_label="id", header=False)
             logger.info("append csv page: "+req_link)
-    else:
-        all_df.to_csv(file_path,mode="a",index_label="id")
-        logger.info("new write csv page: "+req_link)
-    # all_df.to_csv("news_data/"+EXEFILENAME+".csv",mode="a")
-
+        else:
+            all_df.to_csv(file_path,mode="a",index_label="id")
+            logger.info("new write csv page: "+req_link)
+        # all_df.to_csv("news_data/"+EXEFILENAME+".csv",mode="a")
+    

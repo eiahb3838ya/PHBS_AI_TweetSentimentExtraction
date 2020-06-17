@@ -1,5 +1,6 @@
 import logging
 import datetime
+from datetime import date
 import requests, os
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -107,41 +108,45 @@ def get_dict_list(ul_list):
     return(dict_list)
 
 #%%
-
-EXEFILENAME="sinaStock"
-logger=Logger(EXEFILENAME)
-logger.info("start running "+EXEFILENAME)
-ROOT_LINK = "http://finance.sina.com.cn/roll/index.d.html?cid=56588" 
-
-for page_num in range(1,30):
-    req_link=ROOT_LINK+"&page="+str(page_num)
-    logger.info("req new page of :"+req_link)
-    # connection error
-    try:
-        res=requests.get(req_link)
-    except Exception as e :
-        logger.warning(str(e))
-        logger.warning("the page not found")
-        continue
-
-    res.encoding=('utf8')
-    html_doc=res.text
-    soup = BeautifulSoup(html_doc, 'html.parser')
-
-    ul_list=soup.findAll('ul',class_="list_009")
+if __name__ == "__main__":
+    EXEFILENAME="sinaStock"
+    logger=Logger(EXEFILENAME)
+    logger.info("start running "+EXEFILENAME)
+    ROOT_LINK = "http://finance.sina.com.cn/roll/index.d.html?cid=56588" 
+    DATA_PATH = "../02 news_data/"
+    for page_num in range(1,30):
+        req_link=ROOT_LINK+"&page="+str(page_num)
+        logger.info("req new page of :"+req_link)
+        # connection error
+        try:
+            res=requests.get(req_link)
+        except Exception as e :
+            logger.warning(str(e))
+            logger.warning("the page not found")
+            continue
     
-    if not ul_list:
-        logger.warning("there's no ul_list")
-
-    dict_list=get_dict_list(ul_list)
-    all_df=pd.DataFrame(dict_list,columns=["datetime","title","content","link","source"])
-
-    file_path = "news_data/"+EXEFILENAME+".csv"
-    if (os.path.isfile(file_path)):
-        all_df.to_csv(file_path,mode="a",index_label="id", header=False)
-        logger.info("append csv page: "+req_link)
-    else:
-        all_df.to_csv(file_path,mode="a",index_label="id")
-        logger.info("new write csv page: "+req_link)
-    # all_df.to_csv("news_data/"+EXEFILENAME+".csv",mode="a")
-
+        res.encoding=('utf8')
+        html_doc=res.text
+        soup = BeautifulSoup(html_doc, 'html.parser')
+    
+        ul_list=soup.findAll('ul',class_="list_009")
+        
+        if not ul_list:
+            logger.warning("there's no ul_list")
+    
+        dict_list=get_dict_list(ul_list)
+        all_df=pd.DataFrame(dict_list,columns=["datetime","title","content","link","source"])
+    
+        file_path = DATA_PATH + EXEFILENAME+"_{}.csv".format(date.today().strftime("%Y%m%d"))
+        if not os.path.isdir(DATA_PATH):
+            print("creat path for data")
+            os.makedirs(DATA_PATH)
+            
+        if (os.path.isfile(file_path)):
+            all_df.to_csv(file_path,mode="a",index_label="id", header=False)
+            logger.info("append csv page: "+req_link)
+        else:
+            all_df.to_csv(file_path,mode="a",index_label="id")
+            logger.info("new write csv page: "+req_link)
+        # all_df.to_csv("news_data/"+EXEFILENAME+".csv",mode="a")
+    
