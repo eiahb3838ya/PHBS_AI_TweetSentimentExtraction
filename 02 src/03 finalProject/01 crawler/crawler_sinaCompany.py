@@ -4,6 +4,8 @@ from datetime import date
 import requests, os
 from bs4 import BeautifulSoup
 import pandas as pd
+import warnings
+warnings.filterwarnings('ignore')
 
 #%% define Logger Class
 class Logger(object):
@@ -117,7 +119,6 @@ if __name__ == "__main__":
     logger.info("start running "+EXEFILENAME)
     ROOT_LINK = "http://finance.sina.com.cn/roll/index.d.html?cid=56592" 
     DATA_PATH = "../02 news_data/"
-    # DATA_PATH = "news_data/"
     for page_num in range(1,3):
         req_link=ROOT_LINK+"&page="+str(page_num)
         logger.info("req new page of :"+req_link)

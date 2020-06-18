@@ -3,7 +3,7 @@
 Created on Mon Jun 15 2020
 
 @credit to google's bert model
-@author:Robert
+
 """
 #==============================Import library ==============================
 import os

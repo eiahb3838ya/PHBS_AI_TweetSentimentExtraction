@@ -3,7 +3,7 @@
 Created on Mon Jun 15 2020
 
 @credit to google's bert model
-@author: Robert
+
 """
 #==============================set data set================================
 DATA_SET = "sample_19252.json" #FIXME: change this to biggest data set!
