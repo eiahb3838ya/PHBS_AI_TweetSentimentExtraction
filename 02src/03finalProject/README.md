@@ -1,10 +1,10 @@
-## 基于钉钉机器人的财经新闻订阅服务README
+## 基于钉钉机器人的财经新闻订阅服务
 
-##### Background 项目背景
+#### Background
 
 这个项目会通过python的爬虫从新浪财经上下载实时的每日上市公司公告的数据。用ChinaScope提供的已经清洗完的正向、负向、中性情感文本用Bert模型进行训练，sample data的数量是19w条。后端部分是用训练完的Bert模型来对实时爬下来的新浪财经公司公告数据进行情感分类。前端部分是用DingChatBot推送正向和负向情感的前5条新闻。
 
-##### Install  需要安装的环境包
+#### Install Packages In Python
 
 1. crawler：bs4,pandas
 
@@ -12,7 +12,7 @@
 
 3. dingding：dingtalkchatbot 1.5.0
 
-##### Usage 使用手册
+#### Usage
 
 1. 将整个文件夹的03 finalProject clone到本地
 2. 先运行 01 crawler下的[crawler_sinaCompany.py](https://github.com/eiahb3838ya/PHBS_AI_TweetSentimentExtraction/blob/master/02src/03finalProject/01crawler/crawler_sinaCompany.py)，实时从新浪财经上download上市公司新闻公告，数据会存入02 news_data
@@ -22,7 +22,7 @@
 6. 运行 04 dingtalk_chatbot下的[sendnews.py](https://github.com/eiahb3838ya/PHBS_AI_TweetSentimentExtraction/blob/master/02src/03finalProject/04dingtalk_chatbot/sendnews.py)，这里需要设置钉钉机器人的webhook地址和secret，输出结果是正向和负向上市公司新闻公告中前5的新闻，这会直接print到钉钉群中。
 7. 更简单的办法是：直接双击03 finalProject 下的 [startDaily.bat](https://github.com/eiahb3838ya/PHBS_AI_TweetSentimentExtraction/blob/master/02src/03finalProject/startDaily.bat)即可通过batch文件运行，里面的路径需要自己cd修改一下。
 
-##### Environment  GPU版本的tersorflow的环境部署
+#### Environment
 
 Recommand to create three new environment seperately for **crawler/bert/dingchatbot**.
 
@@ -40,15 +40,15 @@ Recommand to create three new environment seperately for **crawler/bert/dingchat
 8. TensorFlow Version(GPU):1.14.0
 9. Bert-TensorFlow Version:1.0.1
 
-##### Contributors
+#### Contributors
 
 这项目是由PHBS.2020.M4.AI.Group1的小组同学。Thanks for their work.
 
-##### Input and Output 输入输出
+#### Input and Output
 
 1. Input：爬虫爬下来的上市公司新闻公告数据
 2. Output：上市公司新闻公告数据新闻情感分类完的结果并在钉钉群里推送
 
-##### License
+#### License
 
 [MIT License](https://github.com/RichardLitt/standard-readme/blob/master/LICENSE) 
