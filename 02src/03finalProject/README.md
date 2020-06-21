@@ -15,12 +15,12 @@
 ##### Usage 使用手册
 
 1. 将整个文件夹的03 finalProject clone到本地
-2. 先运行 01 crawler下的[crawler_sinaCompany.py](https://github.com/eiahb3838ya/PHBS_AI_TweetSentimentExtraction/blob/master/02 src/03 finalProject/01 crawler/crawler_sinaCompany.py)，实时从新浪财经上download上市公司新闻公告，数据会存入02 news_data
-3. 获取bert模型情感分类的训练数据，数据格式类似05 word_segments下的[sample1.json](https://github.com/eiahb3838ya/PHBS_AI_TweetSentimentExtraction/blob/master/02 src/03 finalProject/05 word_segments/sample1.json)，acturally we train model use the ChinaScope's data which has sentiment tag(012). The bigger the dataset, the better the later performance. 
-4. 运行 03 bert下的[AI_bert_for_final.py](https://github.com/eiahb3838ya/PHBS_AI_TweetSentimentExtraction/blob/master/02 src/03 finalProject/03 bert/AI_bert_for_final.py)，会训练模型，如果是19w条sample data，this project actually spent about 3 hours to train bert model. This is related to your pc and the parameters set in the bert model. 这个.py的output结果会生成训练好的model。
-5. 运行 03 bert下的[load_model_and_out_csv.py](https://github.com/eiahb3838ya/PHBS_AI_TweetSentimentExtraction/blob/master/02 src/03 finalProject/03 bert/load_model_and_out_csv.py)，进行了上市公司新闻公告的情感分类，output的结果会存入02 news_data
-6. 运行 04 dingtalk_chatbot下的[sendnews.py](https://github.com/eiahb3838ya/PHBS_AI_TweetSentimentExtraction/blob/master/02 src/03 finalProject/04 dingtalk_chatbot/sendnews.py)，这里需要设置钉钉机器人的webhook地址和secret，输出结果是正向和负向上市公司新闻公告中前5的新闻，这会直接print到钉钉群中。
-7. 更简单的办法是：直接双击03 finalProject 下的 [startDaily.bat](https://github.com/eiahb3838ya/PHBS_AI_TweetSentimentExtraction/blob/master/02 src/03 finalProject/startDaily.bat)即可通过batch文件运行，里面的路径需要自己cd修改一下。
+2. 先运行 01 crawler下的[crawler_sinaCompany.py](https://github.com/eiahb3838ya/PHBS_AI_TweetSentimentExtraction/blob/master/02src/03finalProject/01crawler/crawler_sinaCompany.py)，实时从新浪财经上download上市公司新闻公告，数据会存入02 news_data
+3. 获取bert模型情感分类的训练数据，数据格式类似05 word_segments下的[sample1.json](https://github.com/eiahb3838ya/PHBS_AI_TweetSentimentExtraction/blob/master/02src/03finalProject/05word_segments/sample1.json)，acturally we train model use the ChinaScope's data which has sentiment tag(012). The bigger the dataset, the better the later performance. 
+4. 运行 03 bert下的[AI_bert_for_final.py](https://github.com/eiahb3838ya/PHBS_AI_TweetSentimentExtraction/blob/master/02src/03finalProject/03bert/AI_bert_for_final.py)，会训练模型，如果是19w条sample data，this project actually spent about 3 hours to train bert model. This is related to your pc and the parameters set in the bert model. 这个.py的output结果会生成训练好的model。
+5. 运行 03 bert下的[load_model_and_out_csv.py](https://github.com/eiahb3838ya/PHBS_AI_TweetSentimentExtraction/blob/master/02src/03finalProject/03bert/load_model_and_out_csv.py)，进行了上市公司新闻公告的情感分类，output的结果会存入02 news_data
+6. 运行 04 dingtalk_chatbot下的[sendnews.py](https://github.com/eiahb3838ya/PHBS_AI_TweetSentimentExtraction/blob/master/02src/03finalProject/04dingtalk_chatbot/sendnews.py)，这里需要设置钉钉机器人的webhook地址和secret，输出结果是正向和负向上市公司新闻公告中前5的新闻，这会直接print到钉钉群中。
+7. 更简单的办法是：直接双击03 finalProject 下的 [startDaily.bat](https://github.com/eiahb3838ya/PHBS_AI_TweetSentimentExtraction/blob/master/02src/03finalProject/startDaily.bat)即可通过batch文件运行，里面的路径需要自己cd修改一下。
 
 ##### Environment  GPU版本的tersorflow的环境部署
 
