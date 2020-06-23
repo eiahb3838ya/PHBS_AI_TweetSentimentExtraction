@@ -4,6 +4,7 @@ This is the repo for 2020 Spring AI class.
 Our group member includes:
 - Evan Hu [github](https://github.com/eiahb3838ya)
 - Trista 
+- Felix
 
 ## Main 
 - In this class we have a mid term presentation, which we discuss about the Bert model apply to the tweet sentiment extraction.
