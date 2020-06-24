@@ -1,10 +1,12 @@
 # PHBS_AI_TweetSentimentExtraction
 ## Intro
-This is the repo for 2020 Spring AI class. 
+This is the repo for 2020 Spring M4. AI class. 
 Our group member includes:
 - Evan Hu [github](https://github.com/eiahb3838ya)
-- Trista 
-- Felix
+- Trista Fang [github](https://github.com/ytfang222)
+- Felix Li [github](https://github.com/fangwen-li)
+- Robert Lyu [github](https://github.com/ZhangjieLyu)
+- Edward Gao [github](https://github.com/preciousky)
 
 ## Main 
 - In this class we have a mid term presentation, which we discuss about the Bert model apply to the tweet sentiment extraction.
